@@ -65,7 +65,7 @@
 			</ul>
 		</nav>
 		<nav>
-    			总文章数 1
+    			总文章数 2
 		</nav>
 		<nav class="header-smart-menu">
     		
@@ -160,6 +160,92 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-转录组分析流程（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/02/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">转录组分析流程（二）</a>
+    </h1>
+  
+
+	<!--显示阅读次数-->
+	
+	<!--显示阅读次数完毕-->
+        
+        <a href="/2024/12/02/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%BA%8C%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2024-12-02T13:19:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-12-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="03-序列比对-hisat2"><a href="#03-序列比对-hisat2" class="headerlink" title="03.序列比对-hisat2"></a>03.序列比对-hisat2</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!bin/bash</span></span><br><span class="line"><span class="built_in">mkdir</span> -p [index]/03.hisat2</span><br><span class="line"><span class="built_in">mkdir</span> -p [index]/03.hisat2/index</span><br><span class="line"><span class="built_in">cd</span> [index]/04.hisat2</span><br><span class="line"></span><br><span class="line">hisat2-build -p 36 [genome] [index]/03.hisat2/index/genome-index</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> [index]/02.trimmomatic/*_1_paired.fq.gz</span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">&#123;</span><br><span class="line">name=<span class="variable">$&#123;i%_1_paired.fq.gz&#125;</span></span><br><span class="line">out=$(<span class="built_in">basename</span> <span class="string">&quot;<span class="variable">$name</span>&quot;</span>)</span><br><span class="line">hisat2 -p 36 -x ./index/paindex -1 <span class="variable">$&#123;name&#125;</span>_1_paired.fq.gz -2 <span class="variable">$&#123;name&#125;</span>_2_paired.fq.gz -S [index]/03.hisat2/<span class="variable">$&#123;out&#125;</span>.sam</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="04-samtools"><a href="#04-samtools" class="headerlink" title="04.samtools"></a>04.samtools</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p [index]/04.samtools</span><br><span class="line"><span class="built_in">cd</span> [index]/04.samtools</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> [index]/03.hisat2/*.sam</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">name=<span class="variable">$&#123;i%.sam&#125;</span></span><br><span class="line">out=$(<span class="built_in">basename</span> <span class="string">&quot;<span class="variable">$name</span>&quot;</span>)</span><br><span class="line">samtools view -S <span class="variable">$&#123;name&#125;</span>.sam -b &gt; <span class="variable">$&#123;out&#125;</span>.bam</span><br><span class="line">samtools <span class="built_in">sort</span> <span class="variable">$&#123;out&#125;</span>.bam -o <span class="variable">$&#123;out&#125;</span>_sorted.bam</span><br><span class="line">samtools index <span class="variable">$&#123;out&#125;</span>_sorted.bam</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="05-bam文件质控"><a href="#05-bam文件质控" class="headerlink" title="05.bam文件质控"></a>05.bam文件质控</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!bin/bash</span></span><br><span class="line">gtf=[index]/genomic.gtf</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> [index]/04.samtools/*_sorted.bam</span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">&#123;</span><br><span class="line">bam=<span class="variable">$&#123;i%_sorted.bam&#125;</span></span><br><span class="line">name=$(<span class="built_in">basename</span> <span class="string">&quot;<span class="variable">$bam</span>&quot;</span>)</span><br><span class="line">qualimap rnaseq --java-mem-size=20G -gtf <span class="variable">$gtf</span> -bam <span class="variable">$&#123;bam&#125;</span>.bam -outdir [index]/05.qualimap/<span class="variable">$&#123;name&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#参数详解</span></span><br><span class="line">bamqc模块（BAM QC）：用于单个NGS样本bam文件的QC统计。</span><br><span class="line">rnaseq模块（RNA-<span class="built_in">seq</span> QC）：用于转录组RNA-<span class="built_in">seq</span>样本bam文件的QC统计。</span><br><span class="line">multi-bamqc模块（Multi-sample BAM QC）：用于多样本NGS的bam文件的分组QC统计，即包含个体数据，又包含分组比较。</span><br><span class="line">counts模块（Counts QC）：可用于转录组数据计数的统计，用于量化表达水平。</span><br><span class="line">clustering模块：用于表观基因组（例如甲基化）特征的聚类。</span><br><span class="line">comp-counts模块：输入bam文件和注释文件，计算映射到每个区域的reads数量。</span><br><span class="line"></span><br><span class="line">-bam rnaseq_sample.bam：输入的bam文件。</span><br><span class="line">-outdir rnaseq_out：输出文件的目录。</span><br><span class="line">-outformat PDF:HTML：输出文件格式PDF和HTML，默认是HTML。</span><br><span class="line">--java-mem-size=10G：设置最大内存为10G。</span><br><span class="line">-gtf：输入GTF文件</span><br><span class="line">-pe：paired文件</span><br><span class="line">-s：sorted.bam文件</span><br><span class="line"></span><br><span class="line">multiqc .</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="06-序列定量"><a href="#06-序列定量" class="headerlink" title="06.序列定量"></a>06.序列定量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">cd</span> [index]/06.featurecounts</span><br><span class="line">featureCounts -T 36 -p -t transcript -f -g transcript_id -a [index]/genomic.gtf \</span><br><span class="line">-o [index]/06.featurecounts/count_mRNA.txt [index]/04.samtools/*_sorted.bam</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看相关参数的差别以确定最适配的参数</span></span><br><span class="line">0.不使用-M，使用-t transcript -f -g transcript_id</span><br><span class="line">1.使用-M，使用-t gene -f -g gene_id</span><br><span class="line">2.使用-M，使用-t transcript -f -g transcript_id</span><br><span class="line">3.使用-M，-B，使用-t transcript -f -g transcript_id</span><br><span class="line">4.使用-M,-B,-C，使用-t transcript -f -g transcript_id</span><br><span class="line">5.使用-M，使用-t exon -f -g gene_id</span><br><span class="line"><span class="comment">#参数详解</span></span><br><span class="line">-t:设置feature-type，-t指定的必须是gtf中有的feature，同时<span class="built_in">read</span>只有落到这些feature上才会被统计到，默认是“exon”</span><br><span class="line">-f:如果-f被设置，那将会统计feature层面的数据，如exon-level，否则会统计meta-feature层面的数据，如gene-levels</span><br><span class="line">-g:当参考的gtf提供的时候，我们需要提供一个<span class="built_in">id</span> identifier 来将feature水平的统计汇总为meta-feature水平的统计，默认为gene_id，选择gtf中提供的<span class="built_in">id</span> identifier</span><br><span class="line">-M:	如果设置-M，多重map的<span class="built_in">read</span>将会被统计到（一个reads会被映射到多个转录本中）</span><br><span class="line">-B：在-p选择的条件下，只有两端<span class="built_in">read</span>都比对上的fragment才会被统计</span><br><span class="line">-C：融合的fragment（比对到不同染色体上的fragment）就不会被计数，只有在-p被设置的条件下使用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">生物信息学</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">转录组</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2024/12/02/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-转录组分析流程（一）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -202,6 +288,10 @@
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">生物信息学</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">转录组</a>
         		</li>
       		
 		</ul>
@@ -333,6 +423,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">生物信息学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">转录组</a>
               </li>
             
             <div class="clearfix"></div>
