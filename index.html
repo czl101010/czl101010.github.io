@@ -65,7 +65,7 @@
 			</ul>
 		</nav>
 		<nav>
-    			总文章数 1
+    			总文章数 2
 		</nav>
 		<nav class="header-smart-menu">
     		
@@ -160,6 +160,87 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-转录组分析流程（一）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/02/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/">转录组分析流程（一）</a>
+    </h1>
+  
+
+	<!--显示阅读次数-->
+	
+	<!--显示阅读次数完毕-->
+        
+        <a href="/2024/12/02/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2024-12-02T06:51:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-12-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="上游流程"><a href="#上游流程" class="headerlink" title="上游流程"></a>上游流程</h2><p><a target="_blank" rel="noopener" href="https://anaconda.org/anaconda/conda">conda</a>是专门为了方便使用 Python 进行数据科学研究而建立的一组软件包，涵盖了数据科学领域常见的 Python 库，并且自带了专门用来解决软件环境依赖问题的 conda 包管理系统。主要是提供了包管理与环境管理的功能，可以很方便地解决多版本python并存、切换以及各种第三方包安装问题。<br>Conda FTP: (<a target="_blank" rel="noopener" href="https://repo.anaconda.com/miniconda/%EF%BC%89">https://repo.anaconda.com/miniconda/）</a></p>
+<h3 id="00-软件准备"><a href="#00-软件准备" class="headerlink" title="00.软件准备"></a>00.软件准备</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#配置conda</span></span><br><span class="line"><span class="comment">#1.下载conda</span></span><br><span class="line">wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</span><br><span class="line">bash Miniconda3-latest-Linux-x86_64.sh</span><br><span class="line"><span class="comment">#enter</span></span><br><span class="line"><span class="comment">#输入yes</span></span><br><span class="line"><span class="comment">#再enter</span></span><br><span class="line"><span class="comment">#再yes：此步是启动时自动激活conda环境，如果想修改：</span></span><br><span class="line">conda config --<span class="built_in">set</span> auto_activate_base <span class="literal">false</span></span><br><span class="line"><span class="comment">#创建环境</span></span><br><span class="line">conda create -y -n trans python=2.7</span><br><span class="line"><span class="comment">#下载相关软件</span></span><br><span class="line">conda install -y -c bioconda fastqc multiqc trimmomatic hisat2 samtools subread</span><br></pre></td></tr></table></figure>
+
+<h3 id="01-质控质量查看-fastqc"><a href="#01-质控质量查看-fastqc" class="headerlink" title="01.质控质量查看-fastqc"></a>01.质控质量查看-fastqc</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#首先进行MD5检验查看数据是否传输完整</span></span><br><span class="line"><span class="built_in">md5sum</span> -c md5.txt</span><br><span class="line"><span class="comment">#质控</span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">cd</span> [index]</span><br><span class="line"><span class="built_in">mkdir</span> 01.fastqc</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> [index]/*_1.fq.gz</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">name=<span class="variable">$&#123;i%_1.fq.gz&#125;</span></span><br><span class="line">fastqc -t 36 -o [index]/01.fastqc <span class="variable">$&#123;name&#125;</span>_1.fq.gz <span class="variable">$&#123;name&#125;</span>_2.fq.gz</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#查看整体质量</span></span><br><span class="line">multiqc .</span><br></pre></td></tr></table></figure>
+
+<h3 id="02-质量控制-trimmomatic"><a href="#02-质量控制-trimmomatic" class="headerlink" title="02.质量控制-trimmomatic"></a>02.质量控制-trimmomatic</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!bin/bash</span></span><br><span class="line"><span class="built_in">cd</span> [index]</span><br><span class="line"><span class="built_in">mkdir</span> 02.trimmomatic</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> [index]/00.RawData/*_1.fq.gz</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">out=[index]/02.trimmomatic</span><br><span class="line">name=<span class="variable">$&#123;i%_1.fq.gz&#125;</span></span><br><span class="line">filename=$(<span class="built_in">basename</span> <span class="string">&quot;<span class="variable">$name</span>&quot;</span>)</span><br><span class="line">trimmomatic PE -threads 36 -phred33 -trimlog <span class="variable">$&#123;out&#125;</span>/trimlog.log <span class="variable">$&#123;name&#125;</span>_1.fq.gz <span class="variable">$&#123;name&#125;</span>_2.fq.gz \</span><br><span class="line"><span class="variable">$&#123;out&#125;</span>/<span class="variable">$&#123;filename&#125;</span>_1_paired.fq.gz <span class="variable">$&#123;out&#125;</span>/<span class="variable">$&#123;filename&#125;</span>_1_unpaired.fq.gz <span class="variable">$&#123;out&#125;</span>/<span class="variable">$&#123;filename&#125;</span>_2_paired.fq.gz <span class="variable">$&#123;out&#125;</span>/<span class="variable">$&#123;filename&#125;</span>_2_unpaired.fq.gz \</span><br><span class="line">ILLUMINACLIP:/home/czl/miniconda3/envs/trans/share/trimmomatic-0.39-2/adapters/TruSeq3-PE.fa:2:30:10:2:True LEADING:3 TRAILING:3 MINLEN:36</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">生物信息学</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2024/12/02/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -186,7 +267,7 @@
         <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<p>More info: <a target="_blank" rel="noopener" href="https://anaconda.org/anaconda/conda">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
@@ -327,6 +408,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">生物信息学</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
