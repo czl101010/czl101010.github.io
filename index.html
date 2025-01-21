@@ -65,7 +65,7 @@
 			</ul>
 		</nav>
 		<nav>
-    			总文章数 2
+    			总文章数 3
 		</nav>
 		<nav class="header-smart-menu">
     		
@@ -159,6 +159,94 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-转录组分析流程（三）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/01/21/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89/">转录组分析流程（三）</a>
+    </h1>
+  
+
+        
+        <a href="/2025/01/21/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2025-01-20T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-01-21</time>
+</a>
+
+
+        
+
+ <!-- 添加代码 -->
+    
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="下游流程"><a href="#下游流程" class="headerlink" title="下游流程"></a>下游流程</h2><h3 id="07-R包准备-数据过滤"><a href="#07-R包准备-数据过滤" class="headerlink" title="07.R包准备&amp;数据过滤"></a>07.R包准备&amp;数据过滤</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">install.packages<span class="punctuation">(</span><span class="string">&quot;ggplot2&quot;</span><span class="punctuation">)</span></span><br><span class="line">install.packages<span class="punctuation">(</span><span class="string">&quot;dplyr&quot;</span><span class="punctuation">)</span></span><br><span class="line">install.packages<span class="punctuation">(</span><span class="string">&quot;openxlsx&quot;</span><span class="punctuation">)</span></span><br><span class="line">install.packages<span class="punctuation">(</span><span class="string">&quot;stringr&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#7.1.fpkm</span></span><br><span class="line">countToFpkm <span class="operator">&lt;-</span> <span class="keyword">function</span><span class="punctuation">(</span>counts<span class="punctuation">,</span> effLen<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  N <span class="operator">&lt;-</span> colSums<span class="punctuation">(</span>counts<span class="punctuation">)</span></span><br><span class="line">  <span class="built_in">exp</span><span class="punctuation">(</span> <span class="built_in">log</span><span class="punctuation">(</span>counts<span class="punctuation">)</span> <span class="operator">+</span> <span class="built_in">log</span><span class="punctuation">(</span><span class="number">1e9</span><span class="punctuation">)</span> <span class="operator">-</span> <span class="built_in">log</span><span class="punctuation">(</span>effLen<span class="punctuation">)</span> <span class="operator">-</span> <span class="built_in">log</span><span class="punctuation">(</span>N<span class="punctuation">)</span> <span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">options<span class="punctuation">(</span>scipen <span class="operator">=</span> <span class="number">200</span><span class="punctuation">)</span></span><br><span class="line">fpkm1 <span class="operator">=</span> countToFpkm<span class="punctuation">(</span>data1<span class="punctuation">,</span> data<span class="operator">$</span>Length<span class="punctuation">)</span></span><br><span class="line">fpkm2 <span class="operator">=</span> countToFpkm<span class="punctuation">(</span>data2<span class="punctuation">,</span> data<span class="operator">$</span>Length<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">fpkm_filter1 <span class="operator">=</span> fpkm1<span class="punctuation">[</span>rowSums<span class="punctuation">(</span>fpkm1<span class="punctuation">)</span><span class="operator">&gt;</span><span class="number">0</span><span class="punctuation">,</span><span class="punctuation">]</span></span><br><span class="line">fpkm_filter2 <span class="operator">=</span> fpkm2<span class="punctuation">[</span>rowSums<span class="punctuation">(</span>fpkm2<span class="punctuation">)</span><span class="operator">&gt;</span><span class="number">0</span><span class="punctuation">,</span><span class="punctuation">]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#7.2.tpm</span></span><br><span class="line">fpkmToTpm <span class="operator">=</span> <span class="keyword">function</span><span class="punctuation">(</span>fpkm<span class="punctuation">)</span><span class="punctuation">&#123;</span><span class="built_in">exp</span><span class="punctuation">(</span><span class="built_in">log</span><span class="punctuation">(</span>fpkm<span class="punctuation">)</span><span class="operator">-</span><span class="built_in">log</span><span class="punctuation">(</span><span class="built_in">sum</span><span class="punctuation">(</span>fpkm<span class="punctuation">)</span><span class="punctuation">)</span><span class="operator">+</span><span class="built_in">log</span><span class="punctuation">(</span><span class="number">1e6</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">&#125;</span></span><br><span class="line">tpms1 <span class="operator">=</span> apply<span class="punctuation">(</span>fpkm1<span class="punctuation">,</span><span class="number">2</span><span class="punctuation">,</span>fpkmToTpm<span class="punctuation">)</span></span><br><span class="line">tpms2 <span class="operator">=</span> apply<span class="punctuation">(</span>fpkm2<span class="punctuation">,</span><span class="number">2</span><span class="punctuation">,</span>fpkmToTpm<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">tpms_filter1 <span class="operator">=</span> tpms1<span class="punctuation">[</span>rowSums<span class="punctuation">(</span>tpms1<span class="punctuation">)</span><span class="operator">&gt;</span><span class="number">0</span><span class="punctuation">,</span><span class="punctuation">]</span></span><br><span class="line">tpms_filter2 <span class="operator">=</span> tpms2<span class="punctuation">[</span>rowSums<span class="punctuation">(</span>tpms2<span class="punctuation">)</span><span class="operator">&gt;</span><span class="number">0</span><span class="punctuation">,</span><span class="punctuation">]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#7.3筛选高表达基因(TPM&gt;20)</span></span><br><span class="line">library<span class="punctuation">(</span>dplyr<span class="punctuation">)</span></span><br><span class="line">data1 <span class="operator">&lt;-</span> as.data.frame<span class="punctuation">(</span>tpms<span class="punctuation">[</span> <span class="punctuation">,</span><span class="number">1</span><span class="operator">:</span><span class="number">3</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line">data2 <span class="operator">&lt;-</span> as.data.frame<span class="punctuation">(</span>tpms<span class="punctuation">[</span> <span class="punctuation">,</span><span class="number">4</span><span class="operator">:</span><span class="number">6</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line">filtered_data1 <span class="operator">&lt;-</span> data1 <span class="operator">%&gt;%</span> filter<span class="punctuation">(</span>if_all<span class="punctuation">(</span>everything<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="operator">~</span> . <span class="operator">&gt;</span> <span class="number">20</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">filtered_data2 <span class="operator">&lt;-</span> data2 <span class="operator">%&gt;%</span> filter<span class="punctuation">(</span>if_all<span class="punctuation">(</span>everything<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="operator">~</span> . <span class="operator">&gt;</span> <span class="number">20</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">write.table<span class="punctuation">(</span>filtered_data1<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;mRNA_filter_tpms_20_NC.txt&quot;</span><span class="punctuation">,</span> sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span></span><br><span class="line">write.table<span class="punctuation">(</span>filtered_data2<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;mRNA_filter_tpms_20_WH.txt&quot;</span><span class="punctuation">,</span> sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">生物信息学</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">转录组</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">R语言</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2025/01/21/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-转录组分析流程（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -351,7 +439,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2024 proceed-czl
+    		&copy; 2025 proceed-czl
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -446,6 +534,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">转录组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">R语言</a>
               </li>
             
             <div class="clearfix"></div>
