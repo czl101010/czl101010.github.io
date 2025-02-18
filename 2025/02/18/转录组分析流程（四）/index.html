@@ -6,17 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://czl101010.github.io">
-  <title>Archives: 2025/1 | Proceed的博客</title>
+  <title>转录组分析流程（三） | Proceed的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="生物信息学硕士在读">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Proceed的博客">
-<meta property="og:url" content="https://czl101010.github.io/archives/2025/01/index.html">
+  <meta name="description" content="下游流程（2）09.无参转录组GO富集分析12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576library(ggplot2)library(clusterProfi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="转录组分析流程（三）">
+<meta property="og:url" content="https://czl101010.github.io/2025/02/18/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89/index.html">
 <meta property="og:site_name" content="Proceed的博客">
-<meta property="og:description" content="生物信息学硕士在读">
+<meta property="og:description" content="下游流程（2）09.无参转录组GO富集分析12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576library(ggplot2)library(clusterProfi">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-18T08:36:02.000Z">
+<meta property="article:modified_time" content="2025-02-18T08:47:07.814Z">
 <meta property="article:author" content="proceed-czl">
 <meta property="article:tag" content="生物信息学">
+<meta property="article:tag" content="转录组">
+<meta property="article:tag" content="R语言">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Proceed的博客" type="application/atom+xml">
@@ -158,38 +162,73 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-转录组分析流程（四）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2025" class="archive-year">2025</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/01/21/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2025-01-21T07:54:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-01-21</time>
-</a>
-
-
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/01/21/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89/">转录组分析流程（三）</a>
+    <h1 class="article-title" itemprop="name">
+      转录组分析流程（三）
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2025/02/18/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2025-02-18T08:36:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-02-18</time>
+</a>
+
+
+        
+
+ <!-- 添加代码 -->
+    
+        <span class="archive-article-date">
+            阅读量 <span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="下游流程（2）"><a href="#下游流程（2）" class="headerlink" title="下游流程（2）"></a>下游流程（2）</h2><h3 id="09-无参转录组GO富集分析"><a href="#09-无参转录组GO富集分析" class="headerlink" title="09.无参转录组GO富集分析"></a>09.无参转录组GO富集分析</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>ggplot2<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>clusterProfiler<span class="punctuation">)</span> </span><br><span class="line">library<span class="punctuation">(</span>stringr<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>dplyr<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>openxlsx<span class="punctuation">)</span></span><br><span class="line">rm<span class="punctuation">(</span><span class="built_in">list</span> <span class="operator">=</span> ls<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">data_go <span class="operator">=</span> read.delim<span class="punctuation">(</span><span class="string">&quot;DEG_mRNA.csv&quot;</span> <span class="punctuation">,</span> header <span class="operator">=</span> <span class="built_in">T</span> <span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;,&quot;</span><span class="punctuation">)</span></span><br><span class="line">data1_go <span class="operator">=</span> read.delim<span class="punctuation">(</span><span class="string">&quot;DEG_mRNA_1.csv&quot;</span> <span class="punctuation">,</span> header <span class="operator">=</span> <span class="built_in">T</span> <span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;,&quot;</span><span class="punctuation">)</span></span><br><span class="line">data2_go <span class="operator">=</span> read.delim<span class="punctuation">(</span><span class="string">&quot;DEG_mRNA_2.csv&quot;</span> <span class="punctuation">,</span> header <span class="operator">=</span> <span class="built_in">T</span> <span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;,&quot;</span><span class="punctuation">)</span></span><br><span class="line">data3_go <span class="operator">=</span> read.delim<span class="punctuation">(</span><span class="string">&quot;DEG_mRNA_3.csv&quot;</span> <span class="punctuation">,</span> header <span class="operator">=</span> <span class="built_in">T</span> <span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;,&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">gene_anno <span class="operator">=</span> read.table<span class="punctuation">(</span><span class="string">&quot;go_mysql.txt&quot;</span><span class="punctuation">,</span>header <span class="operator">=</span> <span class="built_in">F</span><span class="punctuation">,</span>sep <span class="operator">=</span> <span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>fill <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> <span class="built_in">quote</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> na.strings <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> fileEncoding <span class="operator">=</span> <span class="string">&quot;UTF-8&quot;</span><span class="punctuation">,</span>skip <span class="operator">=</span> <span class="number">1</span><span class="punctuation">)</span></span><br><span class="line"><span class="built_in">names</span><span class="punctuation">(</span>gene_anno<span class="punctuation">)</span> <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;num_id&quot;</span><span class="punctuation">,</span><span class="string">&quot;ID&quot;</span><span class="punctuation">,</span><span class="string">&quot;Description&quot;</span><span class="punctuation">,</span><span class="string">&quot;catalog&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">term2gene <span class="operator">=</span> read.delim<span class="punctuation">(</span><span class="string">&quot;pa_gene_v3_r.txt&quot;</span><span class="punctuation">,</span>header <span class="operator">=</span> <span class="built_in">F</span><span class="punctuation">,</span>fill <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> <span class="built_in">quote</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> na.strings <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> fileEncoding <span class="operator">=</span> <span class="string">&quot;UTF-8&quot;</span><span class="punctuation">,</span>skip <span class="operator">=</span> <span class="number">1</span><span class="punctuation">)</span></span><br><span class="line">colnames<span class="punctuation">(</span>term2gene<span class="punctuation">)</span> <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;gene&quot;</span><span class="punctuation">,</span><span class="string">&quot;term&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#定义数据集</span></span><br><span class="line">datasets <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>data_go <span class="operator">=</span> data_go<span class="punctuation">,</span></span><br><span class="line">                 data1_go <span class="operator">=</span> data1_go<span class="punctuation">,</span></span><br><span class="line">                 data2_go <span class="operator">=</span> data2_go<span class="punctuation">,</span></span><br><span class="line">                 data3_go <span class="operator">=</span> data3_go<span class="punctuation">)</span></span><br><span class="line"><span class="comment"># 定义函数进行GO富集分析</span></span><br><span class="line">go_enrich_analysis <span class="operator">&lt;-</span> <span class="keyword">function</span><span class="punctuation">(</span>dataset<span class="punctuation">,</span> dataset_name<span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">  genes_down <span class="operator">&lt;-</span> dataset<span class="punctuation">[</span>dataset<span class="operator">$</span>significant <span class="operator">==</span> <span class="string">&quot;downregulated&quot;</span><span class="punctuation">,</span> <span class="punctuation">]</span></span><br><span class="line">  genes_up <span class="operator">&lt;-</span> dataset<span class="punctuation">[</span>dataset<span class="operator">$</span>significant <span class="operator">==</span> <span class="string">&quot;upregulated&quot;</span><span class="punctuation">,</span> <span class="punctuation">]</span></span><br><span class="line">  <span class="comment"># 进行全基因集GO富集分析</span></span><br><span class="line">  GO_rich <span class="operator">&lt;-</span> enricher<span class="punctuation">(</span>gene <span class="operator">=</span> dataset<span class="operator">$</span>gene<span class="punctuation">,</span></span><br><span class="line">                      pvalueCutoff <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span></span><br><span class="line">                      qvalueCutoff <span class="operator">=</span> <span class="number">0.2</span><span class="punctuation">,</span></span><br><span class="line">                      pAdjustMethod <span class="operator">=</span> <span class="string">&quot;BH&quot;</span><span class="punctuation">,</span></span><br><span class="line">                      TERM2GENE <span class="operator">=</span> term2gene<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;term&quot;</span><span class="punctuation">,</span> <span class="string">&quot;gene&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">                      TERM2NAME <span class="operator">=</span> gene_anno<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&#x27;ID&#x27;</span><span class="punctuation">,</span> <span class="string">&#x27;Description&#x27;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line">  <span class="comment"># 进行下调基因的GO富集分析</span></span><br><span class="line">  GO_rich_down <span class="operator">&lt;-</span> enricher<span class="punctuation">(</span>gene <span class="operator">=</span> genes_down<span class="operator">$</span>gene<span class="punctuation">,</span></span><br><span class="line">                           pvalueCutoff <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span></span><br><span class="line">                           qvalueCutoff <span class="operator">=</span> <span class="number">0.2</span><span class="punctuation">,</span></span><br><span class="line">                           pAdjustMethod <span class="operator">=</span> <span class="string">&quot;BH&quot;</span><span class="punctuation">,</span></span><br><span class="line">                           TERM2GENE <span class="operator">=</span> term2gene<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;term&quot;</span><span class="punctuation">,</span> <span class="string">&quot;gene&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">                           TERM2NAME <span class="operator">=</span> gene_anno<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&#x27;ID&#x27;</span><span class="punctuation">,</span> <span class="string">&#x27;Description&#x27;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line">  <span class="comment"># 进行上调基因的GO富集分析</span></span><br><span class="line">  GO_rich_up <span class="operator">&lt;-</span> enricher<span class="punctuation">(</span>gene <span class="operator">=</span> genes_up<span class="operator">$</span>gene<span class="punctuation">,</span></span><br><span class="line">                         pvalueCutoff <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span></span><br><span class="line">                         qvalueCutoff <span class="operator">=</span> <span class="number">0.2</span><span class="punctuation">,</span></span><br><span class="line">                         pAdjustMethod <span class="operator">=</span> <span class="string">&quot;BH&quot;</span><span class="punctuation">,</span></span><br><span class="line">                         TERM2GENE <span class="operator">=</span> term2gene<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;term&quot;</span><span class="punctuation">,</span> <span class="string">&quot;gene&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">                         TERM2NAME <span class="operator">=</span> gene_anno<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&#x27;ID&#x27;</span><span class="punctuation">,</span> <span class="string">&#x27;Description&#x27;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line">  GO <span class="operator">&lt;-</span> GO_rich<span class="operator">@</span>result</span><br><span class="line">  GO_down <span class="operator">&lt;-</span> GO_rich_down<span class="operator">@</span>result</span><br><span class="line">  GO_up <span class="operator">&lt;-</span> GO_rich_up<span class="operator">@</span>result</span><br><span class="line">  <span class="comment"># 合并BP, CC, MF分类</span></span><br><span class="line">  go_enrich <span class="operator">&lt;-</span> merge<span class="punctuation">(</span>GO<span class="punctuation">,</span> gene_anno<span class="punctuation">[</span><span class="punctuation">,</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;ID&quot;</span><span class="punctuation">,</span> <span class="string">&quot;catalog&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span> by <span class="operator">=</span> <span class="string">&#x27;ID&#x27;</span><span class="punctuation">,</span> all.x <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line">  go_enrich_down <span class="operator">&lt;-</span> merge<span class="punctuation">(</span>GO_down<span class="punctuation">,</span> gene_anno<span class="punctuation">[</span><span class="punctuation">,</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;ID&quot;</span><span class="punctuation">,</span> <span class="string">&quot;catalog&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span> by <span class="operator">=</span> <span class="string">&#x27;ID&#x27;</span><span class="punctuation">,</span> all.x <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line">  go_enrich_up <span class="operator">&lt;-</span> merge<span class="punctuation">(</span>GO_up<span class="punctuation">,</span> gene_anno<span class="punctuation">[</span><span class="punctuation">,</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;ID&quot;</span><span class="punctuation">,</span> <span class="string">&quot;catalog&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span> by <span class="operator">=</span> <span class="string">&#x27;ID&#x27;</span><span class="punctuation">,</span> all.x <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 保存结果</span></span><br><span class="line">  <span class="comment">#write.table(go_enrich, paste0(&#x27;GO_enrich_all_&#x27;, dataset_name, &#x27;.txt&#x27;), sep = &#x27;\t&#x27;, row.names = FALSE, quote = FALSE)</span></span><br><span class="line">  <span class="comment">#write.table(go_enrich_down, paste0(&#x27;GO_enrich_down_&#x27;, dataset_name, &#x27;.txt&#x27;), sep = &#x27;\t&#x27;, row.names = FALSE, quote = FALSE)</span></span><br><span class="line">  <span class="comment">#write.table(go_enrich_up, paste0(&#x27;GO_enrich_up_&#x27;, dataset_name, &#x27;.txt&#x27;), sep = &#x27;\t&#x27;, row.names = FALSE, quote = FALSE)</span></span><br><span class="line">  </span><br><span class="line">  write.xlsx<span class="punctuation">(</span>go_enrich<span class="punctuation">,</span> paste0<span class="punctuation">(</span><span class="string">&#x27;GO_enrich_all_&#x27;</span><span class="punctuation">,</span> dataset_name<span class="punctuation">,</span> <span class="string">&#x27;.xlsx&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">  write.xlsx<span class="punctuation">(</span>go_enrich_down<span class="punctuation">,</span> paste0<span class="punctuation">(</span><span class="string">&#x27;GO_enrich_down_&#x27;</span><span class="punctuation">,</span> dataset_name<span class="punctuation">,</span> <span class="string">&#x27;.xlsx&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">  write.xlsx<span class="punctuation">(</span>go_enrich_up<span class="punctuation">,</span> paste0<span class="punctuation">(</span><span class="string">&#x27;GO_enrich_up_&#x27;</span><span class="punctuation">,</span> dataset_name<span class="punctuation">,</span> <span class="string">&#x27;.xlsx&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 绘制条形图</span></span><br><span class="line">  barplot<span class="punctuation">(</span>GO_rich<span class="punctuation">)</span></span><br><span class="line">  barplot<span class="punctuation">(</span>GO_rich_down<span class="punctuation">)</span></span><br><span class="line">  barplot<span class="punctuation">(</span>GO_rich_up<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环遍历每个数据集并进行GO分析</span></span><br><span class="line"><span class="keyword">for</span> <span class="punctuation">(</span>dataset_name <span class="keyword">in</span> <span class="built_in">names</span><span class="punctuation">(</span>datasets<span class="punctuation">)</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">  dataset <span class="operator">&lt;-</span> datasets<span class="punctuation">[[</span>dataset_name<span class="punctuation">]</span><span class="punctuation">]</span></span><br><span class="line">  go_enrich_analysis<span class="punctuation">(</span>dataset<span class="punctuation">,</span> dataset_name<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="10-无参转录组KEGG富集分析"><a href="#10-无参转录组KEGG富集分析" class="headerlink" title="10.无参转录组KEGG富集分析"></a>10.无参转录组KEGG富集分析</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>ggplot2<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>clusterProfiler<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>stringr<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>dplyr<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>openxlsx<span class="punctuation">)</span></span><br><span class="line">rm<span class="punctuation">(</span><span class="built_in">list</span> <span class="operator">=</span> ls<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">genes_anno_ko <span class="operator">&lt;-</span> read.delim<span class="punctuation">(</span><span class="string">&quot;KEGG_pathway_ko.txt&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">T</span><span class="punctuation">,</span>fill <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> <span class="built_in">quote</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> na.strings <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> fileEncoding <span class="operator">=</span> <span class="string">&quot;UTF-8&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">genes_ko_backgene <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;kegg-pathway.txt&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">T</span><span class="punctuation">,</span>fill <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> <span class="built_in">quote</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> na.strings <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> fileEncoding <span class="operator">=</span> <span class="string">&quot;UTF-8&quot;</span><span class="punctuation">,</span>skip <span class="operator">=</span> <span class="number">1</span><span class="punctuation">)</span></span><br><span class="line">colnames<span class="punctuation">(</span>genes_ko_backgene<span class="punctuation">)</span> <span class="operator">&lt;-</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;gene&quot;</span><span class="punctuation">,</span><span class="string">&quot;ko_number&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">file_paths <span class="operator">&lt;-</span> <span class="built_in">list</span><span class="punctuation">(</span></span><br><span class="line">  <span class="string">&quot;[your filepath]&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="string">&quot;[your filepath]&quot;</span></span><br><span class="line"><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#定义函数</span></span><br><span class="line">run_kegg_enrichment <span class="operator">&lt;-</span> <span class="keyword">function</span><span class="punctuation">(</span>data<span class="punctuation">,</span> genes_ko_backgene<span class="punctuation">,</span> genes_anno_ko<span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment"># 分割数据</span></span><br><span class="line">  genes_down <span class="operator">&lt;-</span> data<span class="punctuation">[</span>data<span class="operator">$</span>significant <span class="operator">==</span> <span class="string">&quot;downregulated&quot;</span><span class="punctuation">,</span> <span class="punctuation">]</span></span><br><span class="line">  genes_up <span class="operator">&lt;-</span> data<span class="punctuation">[</span>data<span class="operator">$</span>significant <span class="operator">==</span> <span class="string">&quot;upregulated&quot;</span><span class="punctuation">,</span> <span class="punctuation">]</span></span><br><span class="line">  <span class="comment"># 富集分析</span></span><br><span class="line">  kegg_rich <span class="operator">&lt;-</span> enricher<span class="punctuation">(</span></span><br><span class="line">    gene <span class="operator">=</span> data<span class="operator">$</span>geneid<span class="punctuation">,</span></span><br><span class="line">    TERM2GENE <span class="operator">=</span> genes_ko_backgene<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;ko_number&quot;</span><span class="punctuation">,</span> <span class="string">&quot;gene&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    TERM2NAME <span class="operator">=</span> genes_anno_ko<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;level3_pathway_id&quot;</span><span class="punctuation">,</span> <span class="string">&quot;level3_pathway_name&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    pvalueCutoff <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span> </span><br><span class="line">    pAdjustMethod <span class="operator">=</span> <span class="string">&#x27;BH&#x27;</span><span class="punctuation">,</span></span><br><span class="line">    qvalueCutoff <span class="operator">=</span> <span class="number">0.2</span></span><br><span class="line">  <span class="punctuation">)</span></span><br><span class="line">  </span><br><span class="line">  kegg_rich_up <span class="operator">&lt;-</span> enricher<span class="punctuation">(</span></span><br><span class="line">    gene <span class="operator">=</span> genes_up<span class="operator">$</span>geneid<span class="punctuation">,</span></span><br><span class="line">    TERM2GENE <span class="operator">=</span> genes_ko_backgene<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;ko_number&quot;</span><span class="punctuation">,</span> <span class="string">&quot;gene&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    TERM2NAME <span class="operator">=</span> genes_anno_ko<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;level3_pathway_id&quot;</span><span class="punctuation">,</span> <span class="string">&quot;level3_pathway_name&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    pvalueCutoff <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span> </span><br><span class="line">    pAdjustMethod <span class="operator">=</span> <span class="string">&#x27;BH&#x27;</span><span class="punctuation">,</span></span><br><span class="line">    qvalueCutoff <span class="operator">=</span> <span class="number">0.2</span></span><br><span class="line">  <span class="punctuation">)</span></span><br><span class="line">  </span><br><span class="line">  kegg_rich_down <span class="operator">&lt;-</span> enricher<span class="punctuation">(</span></span><br><span class="line">    gene <span class="operator">=</span> genes_down<span class="operator">$</span>geneid<span class="punctuation">,</span></span><br><span class="line">    TERM2GENE <span class="operator">=</span> genes_ko_backgene<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;ko_number&quot;</span><span class="punctuation">,</span> <span class="string">&quot;gene&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    TERM2NAME <span class="operator">=</span> genes_anno_ko<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;level3_pathway_id&quot;</span><span class="punctuation">,</span> <span class="string">&quot;level3_pathway_name&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    pvalueCutoff <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span> </span><br><span class="line">    pAdjustMethod <span class="operator">=</span> <span class="string">&#x27;BH&#x27;</span><span class="punctuation">,</span></span><br><span class="line">    qvalueCutoff <span class="operator">=</span> <span class="number">0.2</span></span><br><span class="line">  <span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">list</span><span class="punctuation">(</span></span><br><span class="line">    kegg_all <span class="operator">=</span> kegg_rich<span class="operator">@</span>result<span class="punctuation">,</span></span><br><span class="line">    kegg_up <span class="operator">=</span> kegg_rich_up<span class="operator">@</span>result<span class="punctuation">,</span></span><br><span class="line">    kegg_down <span class="operator">=</span> kegg_rich_down<span class="operator">@</span>result</span><br><span class="line">  <span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历文件进行KEGG富集分析</span></span><br><span class="line"><span class="keyword">for</span> <span class="punctuation">(</span>file <span class="keyword">in</span> file_paths<span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">  data <span class="operator">&lt;-</span> read.delim<span class="punctuation">(</span>file<span class="punctuation">,</span> header <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;,&quot;</span><span class="punctuation">,</span> skip <span class="operator">=</span> <span class="number">1</span><span class="punctuation">)</span></span><br><span class="line">  enrichment_results <span class="operator">&lt;-</span> run_kegg_enrichment<span class="punctuation">(</span>data<span class="punctuation">,</span> genes_ko_backgene<span class="punctuation">,</span> genes_anno_ko<span class="punctuation">)</span></span><br><span class="line">  base_name <span class="operator">&lt;-</span> tools<span class="operator">::</span>file_path_sans_ext<span class="punctuation">(</span>basename<span class="punctuation">(</span>file<span class="punctuation">)</span><span class="punctuation">)</span> </span><br><span class="line">  write.table<span class="punctuation">(</span>enrichment_results<span class="operator">$</span>kegg_up<span class="punctuation">,</span> paste0<span class="punctuation">(</span>base_name<span class="punctuation">,</span> <span class="string">&quot;_kegg_up.txt&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span> <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">,</span> row.names <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line">  write.table<span class="punctuation">(</span>enrichment_results<span class="operator">$</span>kegg_down<span class="punctuation">,</span> paste0<span class="punctuation">(</span>base_name<span class="punctuation">,</span> <span class="string">&quot;_kegg_down.txt&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span> <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">,</span> row.names <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line">  write.table<span class="punctuation">(</span>enrichment_results<span class="operator">$</span>kegg_all<span class="punctuation">,</span> paste0<span class="punctuation">(</span>base_name<span class="punctuation">,</span> <span class="string">&quot;_kegg_all.txt&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span> <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">,</span> row.names <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>感谢您的支持<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -209,21 +248,119 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://czl101010.github.io/2025/02/18/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2025/01/21/%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">转录组分析流程（三）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E6%B8%B8%E6%B5%81%E7%A8%8B%EF%BC%882%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">下游流程（2）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#09-%E6%97%A0%E5%8F%82%E8%BD%AC%E5%BD%95%E7%BB%84GO%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">09.无参转录组GO富集分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E6%97%A0%E5%8F%82%E8%BD%AC%E5%BD%95%E7%BB%84KEGG%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">10.无参转录组KEGG富集分析</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
 
+  
 
+  
 
 
           </div>
@@ -255,8 +392,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
